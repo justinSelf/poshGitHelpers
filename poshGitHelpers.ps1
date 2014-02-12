@@ -39,7 +39,7 @@ function Clear-JiraIssue(){
  $GitPromptSettings.BeforeText = " ["
 }
 
-function Git-FilePicker(){    
+function G-FilePicker(){    
     $status = git status
     $matches = $status | Select-String "(deleted|modified):"
 
@@ -48,13 +48,18 @@ function Git-FilePicker(){
       $allFiles += ($match.Line -replace "\s*#\s+", '')
     }
 
-    $untrackedFiles = ($status | Select-String "Untracked" -Context 0, 999).ToString() -split '\r\n'
+    $rawUntrackedFiles = ($status | Select-String "Untracked" -Context 0, 999)
 
-    foreach($file in $untrackedFiles[3..($untrackedFiles.Length-2)]){
-        $allFiles += ("new:        ") + ($file -replace "\s*#\s+", '')
+    if ($rawUntrackedFiles -ne $null){
+      $scrubbedUntrackedFiles = $rawUntrackedFiles.ToString() -split '\r\n'
+
+      foreach($file in $scrubbedUntrackedFiles[3..($scrubbedUntrackedFiles.Length-2)]){
+          $allFiles += ("new:        ") + ($file -replace "\s*#\s+", '')
+      }
     }
-
     $allFiles | Out-GridView -PassThru | Add-FilesToGit
+
+    git status
 }
 
 function Add-FilesToGit(){
