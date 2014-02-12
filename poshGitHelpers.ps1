@@ -1,47 +1,41 @@
 
-function gs(){
+function git-s(){
   git status
 }
 
-function git-c(){
+function git-cm(){
   $message = formatCommitMessage($args[0])
   git commit -m $message
   git status
 }
 
-function gpr(){
+function git-pr(){
  git pull --rebase
 }
 
-function ga(){
+function git-aa(){
   git add --all
   git status		
 }
 
-function gac(){
+function git-ac(){
   git add --all
   $message = formatCommitMessage($args[0])
   git commit -m $message
   git status
 }
 
-function Set-GitJiraISsue(){
-  $Global:CurrentJiraIssue = $args[0]
-  $GitPromptSettings.BeforeText = " [AB-" + $Global:CurrentJiraIssue + " "
-}
-
-
-function formatCommitMessage(){
+function Format-GitCommitMessage(){
   $jiraPrefix = if ($Global:CurrentJiraIssue -eq $null -or $Global:CurrentJiraIssue -eq "") {""} else { "AB-" + $Global:CurrentJiraIssue + " "}
   return $jiraPrefix + $args[0]
 }
 
-function setJiraIssue(){
+function Set-JiraIssue(){
   $Global:CurrentJiraIssue = $args[0]
   $GitPromptSettings.BeforeText = " [AB-" + $Global:CurrentJiraIssue + " "
 }
 
-function clearJiraIssue(){
+function Clear-JiraIssue(){
  $GitPromptSettings.BeforeText = " ["
 }
 
