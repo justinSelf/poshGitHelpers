@@ -4,7 +4,7 @@ function git-s(){
 }
 
 function git-cm(){
-  $message = formatCommitMessage($args[0])
+  $message = Format-GitCommitMessage($args[0])
   git commit -m $message
   git status
 }
@@ -20,7 +20,7 @@ function git-aa(){
 
 function git-ac(){
   git add --all
-  $message = formatCommitMessage($args[0])
+  $message = Format-GitCommitMessage($args[0])
   git commit -m $message
   git status
 }
