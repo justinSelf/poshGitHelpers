@@ -45,31 +45,28 @@ function clearJiraIssue(){
  $GitPromptSettings.BeforeText = " ["
 }
 
-function gfp(){
-    clear
-    #git status    
-
+function Git-FilePicker(){    
     $status = git status
-    $trackedFiles = $status | Select-String "(deleted|modified):"
-    $untrackedFiles = ($status | Select-String "Untracked" -Context 0, 999).ToString();
+    $matches = $status | Select-String "(deleted|modified):"
 
-    
-    $untrackedFiles = ($untrackedFiles -split '\r\n')
-    
+    $allFiles = @()
+    foreach( $match in $matches){
+      $allFiles += ($match.Line -replace "\s*#\s+", '')
+    }
 
-    ($trackedFiles + $untrackedFiles[3..($untrackedFiles.Length-2)]) | Out-GridView -PassThru
+    $untrackedFiles = ($status | Select-String "Untracked" -Context 0, 999).ToString() -split '\r\n'
 
-  #$status | grep "\(modified\|deleted\|new\)" | Out-GridView -passthru | file-picker
- #git status
+    foreach($file in $untrackedFiles[3..($untrackedFiles.Length-2)]){
+        $allFiles += ("new:        ") + ($file -replace "\s*#\s+", '')
+    }
+
+    $allFiles | Out-GridView -PassThru | Add-FilesToGit
 }
 
-function file-picker(){
-$pattern = "s/^# *modified: *//"
+function Add-FilesToGit(){
+$pattern = "^\w+:\s+"
 foreach($line in $input)
  {
-  $exitFlag = $line -imatch "not staged"
-
-  $file = $line -replace "^#\s+modified:\s+", ''
-  git add $file
+  git add ($line -replace $pattern, '')
  }
 }
