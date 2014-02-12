@@ -1,24 +1,24 @@
 
-function git-s(){
+function g-s(){
   git status
 }
 
-function git-cm(){
+function g-cm(){
   $message = Format-GitCommitMessage($args[0])
   git commit -m $message
   git status
 }
 
-function git-pr(){
+function g-pr(){
  git pull --rebase
 }
 
-function git-aa(){
+function g-aa(){
   git add --all
   git status		
 }
 
-function git-ac(){
+function g-ac(){
   git add --all
   $message = Format-GitCommitMessage($args[0])
   git commit -m $message
