@@ -29,13 +29,13 @@ function g-ac(){
 }
 
 function Format-GitCommitMessage(){
-  $jiraPrefix = if ($Global:CurrentJiraIssue -eq $null -or $Global:CurrentJiraIssue -eq "") {""} else { "BOR-" + $Global:CurrentJiraIssue + " "}
+  $jiraPrefix = if ($Global:CurrentJiraIssue -eq $null -or $Global:CurrentJiraIssue -eq "") {""} else { "GEN-" + $Global:CurrentJiraIssue + " "}
   return $jiraPrefix + $args[0]
 }
 
 function Set-JiraIssue(){
   $Global:CurrentJiraIssue = $args[0]
-  $GitPromptSettings.BeforeText = " [BOR-" + $Global:CurrentJiraIssue + " "
+  $GitPromptSettings.BeforeText = " [GEN-" + $Global:CurrentJiraIssue + " "
 }
 
 function Clear-JiraIssue(){
@@ -66,9 +66,9 @@ function G-FilePicker(){
 }
 
 function Add-FilesToGit(){
-$pattern = "^\w+:\s+"
-foreach($line in $input)
- {
-  git add ($line -replace $pattern, '')
- }
+    $pattern = "^\w+:\s+"
+    foreach($line in $input)
+    {
+    git add ($line -replace $pattern, '')
+    }
 }
