@@ -29,13 +29,13 @@ function g-ac(){
 }
 
 function Format-GitCommitMessage(){
-  $jiraPrefix = if ($Global:CurrentJiraIssue -eq $null -or $Global:CurrentJiraIssue -eq "") {""} else { "GEN-" + $Global:CurrentJiraIssue + " "}
+  $jiraPrefix = if ($Global:CurrentJiraIssue -eq $null -or $Global:CurrentJiraIssue -eq "") {""} else { $Global:CurrentJiraIssue + " "}
   return $jiraPrefix + $args[0]
 }
 
 function Set-JiraIssue(){
   $Global:CurrentJiraIssue = $args[0]
-  $GitPromptSettings.BeforeText = " [GEN-" + $Global:CurrentJiraIssue + " "
+  $GitPromptSettings.BeforeText = " [" + $Global:CurrentJiraIssue + " "
 }
 
 function Clear-JiraIssue(){
