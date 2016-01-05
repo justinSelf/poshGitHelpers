@@ -71,6 +71,6 @@ function Add-FilesToGit(){
     $pattern = "^\w+:\s+"
     foreach($line in $input)
     {
-    git add ($line -replace $pattern, '')
+        git add ($line -replace $pattern, '')
     }
 }
